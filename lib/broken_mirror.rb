@@ -2,6 +2,7 @@
 require "broken_mirror/version"
 require 'broken_mirror/functor'
 require 'broken_mirror/compose'
+require 'broken_mirror/applicative'
 
 module BrokenMirror
   module Identity
@@ -45,30 +46,6 @@ module BrokenMirror
           raise ArgumentError, 'Wrong Argument type'
         end
       end.curry.()
-    end
-  end
-
-  class Applicative
-    def self.pure val
-      self.new val
-    end
-
-    def ap *args
-      chain.(*args)
-    end
-
-    private
-
-    def chain
-      if @val.arity > 1
-        @val.curry.()
-      else
-        @val
-      end
-    end
-
-    def initialize(val)
-      @val = val
     end
   end
 

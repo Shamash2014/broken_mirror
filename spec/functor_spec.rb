@@ -12,7 +12,7 @@ describe BrokenMirror::Functor do
       ->(x) { x * 3 }
     end
 
-    let(:compose) { BrokenMirror::Pipe.compose }
+    let(:compose) { BrokenMirror::Compose.compose }
 
     context 'callable' do
      it 'respond to call' do

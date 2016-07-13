@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Shamash2014"]
   spec.email         = ["warp.buddhist@gmail.com"]
 
-  spec.summary       = }
+  spec.summary       = "Optionated functional util for Ruby based on Fantasy Land specification and Hask"
   spec.homepage      = "https://github.com/Shamash2014/broken_mirror"
   spec.license       = "MIT"
 

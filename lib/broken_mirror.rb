@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 require "broken_mirror/version"
 require 'broken_mirror/functor'
+require 'broken_mirror/compose'
 
 module BrokenMirror
   module Identity
@@ -98,14 +99,6 @@ module BrokenMirror
 
     def initialize(val)
       @val = val
-    end
-  end
-
-  class Pipe
-    def self.compose
-      Proc.new do |f, g|
-        -> (*args) { g.(f.(*args)) }
-      end.curry.()
     end
   end
 

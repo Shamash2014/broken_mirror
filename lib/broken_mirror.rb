@@ -1,12 +1,13 @@
 # frozen_string_literal: false
 require "broken_mirror/version"
+require 'broken_mirror/functor'
 
 module BrokenMirror
-  module Functor
-    def self.fmap
-      Proc.new do |block, val|
-        block.call(val)
-      end.curry.()
+  module Identity
+    # id :: a -> a
+
+    def self.id
+      Proc.new { |x| x }
     end
   end
 
@@ -21,26 +22,26 @@ module BrokenMirror
   module Foldable
     def self.foldl
       Proc.new do |block, *rest|
-        if rest.size == 1
+        if rest.size == 1 && rest.first.is_a?(Array)
           rest.first.reduce(&block)
-        elsif rest.size == 2
+        elsif rest.size == 2 && rest.last.is_a?(Array)
           initial, acc = rest
           acc.reduce(initial, &block)
         else
-          raise ArgumentError
+          raise ArgumentError, 'Wrong Argument type'
         end
       end.curry.()
     end
 
     def self.foldr
       Proc.new do |block, *rest|
-        if rest.size == 1
+        if rest.size == 1 && rest.first.is_a?(Array)
           rest.first.reverse.reduce(&block)
-        elsif rest.size == 2
+        elsif rest.size == 2 && rest.last.is_a?(Array)
           initial, acc = rest
           acc.reverse.reduce(initial, &block)
         else
-          raise ArgumentError
+          raise ArgumentError, 'Wrong Argument type'
         end
       end.curry.()
     end

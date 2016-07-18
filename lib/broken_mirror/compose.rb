@@ -4,9 +4,9 @@ module BrokenMirror
   module Compose
     # compose :: (b -> c) -> (a -> b) -> a -> c
     def self.compose
-      Proc.new do |f, g|
-        -> (*args) { g.(f.(*args)) }
-      end.curry.()
+      proc do |f, g|
+        -> (*args) { g.call(f.call(*args)) }
+      end.curry.call
     end
   end
 end

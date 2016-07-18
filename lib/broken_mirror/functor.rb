@@ -7,9 +7,9 @@ module BrokenMirror
     # fmap :: (a -> b) -> Proc a -> Proc b
 
     def self.fmap
-      Proc.new do |block, val|
+      proc do |block, val|
         block.call(val)
-      end.curry.()
+      end.curry.call
     end
   end
 end

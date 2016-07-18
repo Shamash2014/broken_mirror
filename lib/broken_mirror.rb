@@ -1,29 +1,30 @@
 # frozen_string_literal: false
-require "broken_mirror/version"
+require 'broken_mirror/version'
 require 'broken_mirror/functor'
 require 'broken_mirror/compose'
 require 'broken_mirror/applicative'
+require 'broken_mirror/monad'
 
 module BrokenMirror
   module Identity
     # id :: a -> a
 
     def self.id
-      Proc.new { |x| x }
+      proc { |x| x }
     end
   end
 
   module Bifunctor
     def self.bimap
-      Proc.new{ |f, g, x, y|
-        [f.(x), g.(y)]
-      }.curry.()
+      proc do |f, g, x, y|
+        [f.call(x), g.call(y)]
+      end.curry.call
     end
   end
 
   module Foldable
     def self.foldl
-      Proc.new do |block, *rest|
+      proc do |block, *rest|
         if rest.size == 1 && rest.first.is_a?(Array)
           rest.first.reduce(&block)
         elsif rest.size == 2 && rest.last.is_a?(Array)
@@ -32,11 +33,11 @@ module BrokenMirror
         else
           raise ArgumentError, 'Wrong Argument type'
         end
-      end.curry.()
+      end.curry.call
     end
 
     def self.foldr
-      Proc.new do |block, *rest|
+      proc do |block, *rest|
         if rest.size == 1 && rest.first.is_a?(Array)
           rest.first.reverse.reduce(&block)
         elsif rest.size == 2 && rest.last.is_a?(Array)
@@ -45,7 +46,7 @@ module BrokenMirror
         else
           raise ArgumentError, 'Wrong Argument type'
         end
-      end.curry.()
+      end.curry.call
     end
   end
 
@@ -64,8 +65,8 @@ module BrokenMirror
   end
 
   class Chain
-    def self.lift val
-      self.new val
+    def self.lift(val)
+      new val
     end
 
     def bind
@@ -76,34 +77,6 @@ module BrokenMirror
 
     def initialize(val)
       @val = val
-    end
-  end
-
-  class Monad
-    def self.pure val
-      self.new val
-    end
-
-    def bind(block)
-      self.class.new(block.call(@val.first))
-    end
-
-    def join val
-      if val.class == 'Monad'
-        self.class.new val.out.first
-      else
-        self.class.new val.first
-      end
-    end
-
-    def out(where=self)
-      @val
-    end
-
-    private
-
-    def initialize(val)
-      @val = [val]
     end
   end
 end

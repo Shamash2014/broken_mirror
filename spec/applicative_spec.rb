@@ -7,11 +7,11 @@ describe BrokenMirror::Applicative do
   end
 
   it 'pure return new Applicative instance' do
-    expect(pure.(combine).class).to eql BrokenMirror::Applicative
+    expect(pure.call(combine).class).to eql BrokenMirror::Applicative
   end
 
   it 'ap will apply contextualised function to arguments' do
-    expect(pure.(combine).ap.(1).(2).(3)).to eql 6
-    expect(pure.(combine).ap(10).(20).(30)).to eql 60
+    expect(pure.call(combine).ap.call(1).call(2).call(3)).to eql 6
+    expect(pure.call(combine).ap(10).call(20).call(30)).to eql 60
   end
 end

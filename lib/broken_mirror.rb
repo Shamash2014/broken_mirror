@@ -4,6 +4,8 @@ require 'broken_mirror/functor'
 require 'broken_mirror/compose'
 require 'broken_mirror/applicative'
 require 'broken_mirror/monad'
+require 'broken_mirror/monoid'
+require 'broken_mirror/chain'
 
 module BrokenMirror
   module Identity
@@ -18,7 +20,7 @@ module BrokenMirror
     def self.bimap
       proc do |f, g, x, y|
         [f.call(x), g.call(y)]
-      end.curry.call
+      end.curry
     end
   end
 
@@ -47,36 +49,6 @@ module BrokenMirror
           raise ArgumentError, 'Wrong Argument type'
         end
       end.curry.call
-    end
-  end
-
-  class Monoid
-    def initialize(val)
-      @val = [val]
-    end
-
-    def empty
-      @val.first
-    end
-
-    def concat(val2)
-      self.class.new(@val.concat(val2))
-    end
-  end
-
-  class Chain
-    def self.lift(val)
-      new val
-    end
-
-    def bind
-      -> (f) { self.class.new(f.call(@value)) }
-    end
-
-    private
-
-    def initialize(val)
-      @val = val
     end
   end
 end

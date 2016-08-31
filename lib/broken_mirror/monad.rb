@@ -3,10 +3,10 @@ module BrokenMirror
   # Every monad operation can be chained over monad
   # Monad has a join method, which will extract value from it
   # Given monad is a monoid, you can get value from monad using empty
-  # Then method primary used for callbacks
+  # Then method primary used for callbacks, hence it ignores value from previous computation
   class Monad
     # pure :: a -> Monad a
-    def self.pure(val)
+    def self.unite(val)
       unless val.respond_to?(:bind)
         new val
       else

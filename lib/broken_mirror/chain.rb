@@ -1,7 +1,6 @@
 module BrokenMirror
   class Chain
     # Chain allow to lift some value to the pipe
-
     # lift :: a -> Chain a
     def self.lift(val)
       new val

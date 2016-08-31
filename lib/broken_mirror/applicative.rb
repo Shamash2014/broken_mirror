@@ -1,6 +1,7 @@
 module BrokenMirror
   class Applicative
-    def self.pure
+    private_class_method :new
+    def self.unite
       proc do |val|
         new val
       end
